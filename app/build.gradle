@@ -12,8 +12,8 @@ android {
         applicationId "il.co.yomanim.mobileyomanim"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 24
-        versionName "2.9.2"
+        versionCode 25
+        versionName "2.9.3"
     }
     buildTypes {
         release {

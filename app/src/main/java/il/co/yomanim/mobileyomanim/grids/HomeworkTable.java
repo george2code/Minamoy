@@ -27,8 +27,6 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -352,6 +350,7 @@ public class HomeworkTable {
 
 
     //new - working - discuss - reopened - completed - closed - cancelled
+    // 0       1         2         3          4           5         6
     //выдано = выполнено, отменено
     //выполнено = на доработке
     //на доработке = выполнено, отменено
@@ -363,13 +362,13 @@ public class HomeworkTable {
                 // Disable click item < month current
                 @Override
                 public boolean isEnabled(int position) {
-                    if ((task.getStatus().equalsIgnoreCase("new") && (position == 0 || position == 2 || position == 4 || position == 5 || position == 6)) ||
+                    if ((task.getStatus().equalsIgnoreCase("new") && (position == 0 || position == 1 || position == 2 || position == 4 || position == 5 || position == 6)) ||
                             (task.getStatus().equalsIgnoreCase("working") && (position == 1 || position == 2 || position == 4 || position == 5 || position == 6)) ||
                             (task.getStatus().equalsIgnoreCase("discuss") && (position == 2 || position == 1 || position == 4 || position == 5 || position == 6)) ||
-                            (task.getStatus().equalsIgnoreCase("reopened") && (position == 3 || position == 4 || position == 5 || position == 6)) ||
+                            (task.getStatus().equalsIgnoreCase("reopened") && (position == 3 || position == 5 || position == 6)) ||
                             (task.getStatus().equalsIgnoreCase("completed") && (position == 4 || position == 3)) ||
                             (task.getStatus().equalsIgnoreCase("closed") && (position == 5 || position == 3)) ||
-                            (task.getStatus().equalsIgnoreCase("cancelled") && (position == 6 || position == 4 || position == 3))) {
+                            (task.getStatus().equalsIgnoreCase("cancelled") && (position == 6 || position == 3))) {
                         return true;
                     }
                     return false;
@@ -379,13 +378,13 @@ public class HomeworkTable {
                 public View getDropDownView(int position, View convertView, ViewGroup parent) {
                     View mView = super.getDropDownView(position, convertView, parent);
                     TextView mTextView = (TextView) mView;
-                    if ((task.getStatus().equalsIgnoreCase("new") && (position == 0 || position == 2 || position == 4 || position == 5 || position == 6)) ||
+                    if ((task.getStatus().equalsIgnoreCase("new") && (position == 0 || position == 1 || position == 2 || position == 4 || position == 5 || position == 6)) ||
                             (task.getStatus().equalsIgnoreCase("working") && (position == 1 || position == 2 || position == 4 || position == 5 || position == 6)) ||
                             (task.getStatus().equalsIgnoreCase("discuss") && (position == 2 || position == 1 || position == 4 || position == 5 || position == 6)) ||
-                            (task.getStatus().equalsIgnoreCase("reopened") && (position == 3 || position == 4 || position == 5 || position == 6)) ||
+                            (task.getStatus().equalsIgnoreCase("reopened") && (position == 3 || position == 5 || position == 6)) ||
                             (task.getStatus().equalsIgnoreCase("completed") && (position == 4 || position == 3)) ||
                             (task.getStatus().equalsIgnoreCase("closed") && (position == 5 || position == 3)) ||
-                            (task.getStatus().equalsIgnoreCase("cancelled") && (position == 6 || position == 4 || position == 3))) {
+                            (task.getStatus().equalsIgnoreCase("cancelled") && (position == 6 || position == 3))) {
                         mTextView.setTextColor(Color.BLACK);
                     } else {
                         mTextView.setTextColor(Color.GRAY);
@@ -484,14 +483,15 @@ public class HomeworkTable {
                     if (taskParamResult.marks != null && taskParamResult.marks.size() > 0) {
                         for(Mark mark : taskParamResult.marks) {
                             if (mark.getPerson() == task.getPerson()) {
-                                textMark = getTableTaskCell(mark.getValue(), Gravity.CENTER, fontMedium, 11, mark.getMarkBackground());
+                                String markValue = isMarkStatus(task.getStatus()) ? mark.getValue() : "";
+                                textMark = getTableTaskCell(markValue, Gravity.CENTER, fontMedium, 11, mark.getMarkBackground());
                                 isMarkExists = true;
                                 break;
                             }
                         }
                     }
                     if (!isMarkExists) {
-                        textMark = getTableTaskCell((_roleType == RoleType.Teacher || task.getStatus().equalsIgnoreCase("completed"))
+                        textMark = getTableTaskCell((_roleType == RoleType.Teacher && isMarkStatus(task.getStatus()))
                                 ? "Add score" : "", Gravity.CENTER, fontLight, 11, Color.parseColor("#000000"));
                     }
 
@@ -523,102 +523,115 @@ public class HomeworkTable {
     // END: Homework Loader Task
 
 
-    private void setupMarkCell(TextView text, final TableRow tableRow) {
+    private boolean isMarkStatus(String status) {
+        return (status.equalsIgnoreCase("completed") || status.equalsIgnoreCase("closed"));
+    }
+
+
+
+    private void setupMarkCell(final TextView text, final TableRow tableRow) {
         text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!TextUtils.isEmpty(((TextView)tableRow.getChildAt(2)).getText()))
+                {
+                    TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 0);
+                    EditText edit = new EditText(_context.getActivity());
+                    edit.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    edit.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                    edit.setGravity(Gravity.CENTER_HORIZONTAL);
+                    edit.setLayoutParams(params);
+                    edit.setMaxLines(1);
+                    edit.setTextSize(11);
+                    edit.setFilters(new InputFilter[]{ new InputFilterMinMax("1", "100")});
 
-                TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 0);
-                EditText edit = new EditText(_context.getActivity());
-                edit.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                edit.setImeOptions(EditorInfo.IME_ACTION_DONE);
-                edit.setGravity(Gravity.CENTER_HORIZONTAL);
-                edit.setLayoutParams(params);
-                edit.setMaxLines(1);
-                edit.setTextSize(11);
-                edit.setFilters(new InputFilter[]{ new InputFilterMinMax("1", "100")});
+                    String regexStr = "^[0-9]*$";
+                    if(text.getText().toString().trim().matches(regexStr)) {
+                        //write code here for success
+                        edit.setText(text.getText());
+                    }
 
-                edit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        if (!hasFocus) {
-                            //code to execute when EditText loses focus
-                            String txt = ((EditText)v).getText().toString();
-                            if (!TextUtils.isEmpty(txt)) {
-                                //mark
-                                Mark mark = new Mark();
-                                mark.setValue(txt);
-                                TextView tvMark = getTableTaskCell(mark.getValue(), Gravity.CENTER, fontMedium, 11, mark.getMarkBackground());
+                    edit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View v, boolean hasFocus) {
+                            if (!hasFocus) {
+                                //code to execute when EditText loses focus
+                                String txt = ((EditText)v).getText().toString();
+                                if (!TextUtils.isEmpty(txt)) {
+                                    //mark
+                                    Mark mark = new Mark();
+                                    mark.setValue(txt);
+                                    TextView tvMark = getTableTaskCell(mark.getValue(), Gravity.CENTER, fontMedium, 11, mark.getMarkBackground());
 
-                                tableRow.removeViewAt(2);
-                                tableRow.addView(tvMark);
+                                    tableRow.removeViewAt(2);
+                                    tableRow.addView(tvMark);
 
-                                setupMarkCell(tvMark, tableRow);
-                            } else {
-                                //add score text
-                                TextView tv1 = getTableTaskCell((_roleType == RoleType.Teacher) ?
-                                        "Add score" : "", Gravity.CENTER, fontLight, 11, Color.parseColor("#000000"));
+                                    setupMarkCell(tvMark, tableRow);
+                                } else {
+                                    //add score text
+                                    TextView tv1 = getTableTaskCell((_roleType == RoleType.Teacher) ?
+                                            "Add score" : "", Gravity.CENTER, fontLight, 11, Color.parseColor("#000000"));
 
-                                tableRow.removeViewAt(2);
-                                tableRow.addView(tv1);
+                                    tableRow.removeViewAt(2);
+                                    tableRow.addView(tv1);
 
-                                setupMarkCell(tv1, tableRow);
+                                    setupMarkCell(tv1, tableRow);
+                                }
                             }
                         }
-                    }
-                });
+                    });
 
-                edit.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                                actionId == EditorInfo.IME_ACTION_DONE ||
-                                event.getAction() == KeyEvent.ACTION_DOWN &&
-                                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                            hideKeyboard();
-                            if (!TextUtils.isEmpty(v.getText())) {
-                                //mark
-                                Mark mark = new Mark();
-                                mark.setValue(v.getText().toString());
-                                TextView tvMark = getTableTaskCell(mark.getValue(), Gravity.CENTER, fontMedium, 11, mark.getMarkBackground());
+                    edit.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                                    actionId == EditorInfo.IME_ACTION_DONE ||
+                                    event.getAction() == KeyEvent.ACTION_DOWN &&
+                                            event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                                hideKeyboard();
+                                if (!TextUtils.isEmpty(v.getText())) {
+                                    //mark
+                                    Mark mark = new Mark();
+                                    mark.setValue(v.getText().toString());
+                                    TextView tvMark = getTableTaskCell(mark.getValue(), Gravity.CENTER, fontMedium, 11, mark.getMarkBackground());
 
-                                tableRow.removeViewAt(2);
-                                tableRow.addView(tvMark);
+                                    tableRow.removeViewAt(2);
+                                    tableRow.addView(tvMark);
 
-                                setupMarkCell(tvMark, tableRow);
-                            } else {
-                                //add score text
-                                TextView tv1 = getTableTaskCell((_roleType == RoleType.Teacher) ? "Add score" : "", Gravity.CENTER, fontLight, 11, Color.parseColor("#000000"));
+                                    setupMarkCell(tvMark, tableRow);
+                                } else {
+                                    //add score text
+                                    TextView tv1 = getTableTaskCell((_roleType == RoleType.Teacher) ? "Add score" : "", Gravity.CENTER, fontLight, 11, Color.parseColor("#000000"));
 
-                                tableRow.removeViewAt(2);
-                                tableRow.addView(tv1);
+                                    tableRow.removeViewAt(2);
+                                    tableRow.addView(tv1);
 
-                                setupMarkCell(tv1, tableRow);
+                                    setupMarkCell(tv1, tableRow);
+                                }
+                                return true;
                             }
-                            return true;
+                            return false;
                         }
-                        return false;
+                    });
+
+                    if(edit.requestFocus()) {
+                        InputMethodManager inputMethodManager = (InputMethodManager)_context.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                     }
-                });
 
-                if(edit.requestFocus()) {
-                    InputMethodManager inputMethodManager = (InputMethodManager)_context.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                }
-
-                tableRow.removeViewAt(2);
-                tableRow.addView(edit);
+                    tableRow.removeViewAt(2);
+                    tableRow.addView(edit);
+                } //end if
             }
         });
     }
+
 
 
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager)_context.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
-
-
 
 
 
@@ -654,7 +667,7 @@ public class HomeworkTable {
             }
             if (result) {
                 //add score text
-                TextView tv = getTableTaskCell((_roleType == RoleType.Teacher || newTask.getStatus().equalsIgnoreCase("completed")) ? "Add score" : "",
+                TextView tv = getTableTaskCell((_roleType == RoleType.Teacher && isMarkStatus(newTask.getStatus())) ? "Add score" : "",
                         Gravity.CENTER, fontLight, 11, Color.parseColor("#000000"));
 
                 tableRow.removeViewAt(2);
