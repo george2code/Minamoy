@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_selector"
+    android:orientation="horizontal"
+    android:paddingLeft="20dp"
+    android:paddingTop="15dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="15dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleViewChild"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/school_avatar_placeholder"
+        android:src="@drawable/no_ava" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Child Name"
+        android:id="@+id/textViewChildTitle"
+        android:textColor="#333"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:layout_below="@+id/textViewCity"
+        android:layout_toRightOf="@+id/circleViewChild"
+        android:layout_toEndOf="@+id/circleViewChild"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="4dp"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewChildTitle"
+        android:layout_alignLeft="@+id/textViewChildTitle"
+        android:layout_alignStart="@+id/textViewChildTitle">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_person_class"
+            android:id="@+id/textViewChildClassTitle"
+            android:textSize="11sp"
+            android:textColor="#333" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Person Id"
+            android:id="@+id/textViewChildPersonId"
+            android:textColor="#116ea9"
+            android:textSize="11sp"
+            android:layout_below="@+id/textViewChildTitle"
+            android:layout_toRightOf="@+id/circleViewChild"
+            android:layout_toEndOf="@+id/circleViewChild"
+            android:layout_marginLeft="5dp" />
+    </LinearLayout>
+
+</RelativeLayout>

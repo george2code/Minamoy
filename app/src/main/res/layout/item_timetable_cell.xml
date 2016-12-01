@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="55dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:padding="10dp"
+            android:background="#9e9e9e"
+            android:id="@+id/frameLayoutTimetable"
+            android:measureAllChildren="false">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="History"
+                android:id="@+id/textViewTimeName"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="8:00AM - 9:15AM"
+                android:layout_below="@+id/textViewTimeName"
+                android:id="@+id/textViewTimeHours"
+                android:layout_gravity="left|bottom"
+                android:textColor="#fff"
+                android:textSize="12dp"
+                android:layout_marginBottom="3dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Room:"
+                android:id="@+id/textViewPlace"
+                android:layout_gravity="right"
+                android:textSize="11sp"
+                android:textColor="#fff"
+                android:layout_marginRight="50dp" />
+
+        </FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,18 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:descendantFocusability="blocksDescendants"
+    android:tag="LANGUAGE_TAG"
+    tools:context="il.co.yomanim.mobileyomanim.fragments.LanguageFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewLanguages"
+        android:divider="#cccccc"
+        android:dividerHeight="1dp"
+        />
+</RelativeLayout>

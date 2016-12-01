@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Subject name:"
+                    android:id="@+id/tvHomeworkTitleSubject"
+                    android:layout_marginRight="10dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/hw_dialog_title" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="subject text"
+                    android:id="@+id/tvHomeworkSubjectName"
+                    android:textSize="13sp"
+                    android:textColor="@color/hw_item_text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lesson:"
+                    android:id="@+id/tvHomeworkTitleLesson"
+                    android:textColor="@color/hw_dialog_title"
+                    android:textSize="13sp"
+                    android:layout_marginRight="5dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="date, lesson"
+                    android:id="@+id/tvHomeworkLessonName"
+                    android:textColor="@color/hw_item_text"
+                    android:textSize="13sp"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Work status:"
+                    android:id="@+id/tvHomeworkTitleWork"
+                    android:textColor="@color/hw_dialog_title"
+                    android:textSize="13sp"
+                    android:layout_marginRight="5dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Work text"
+                    android:id="@+id/tvHomeworkWorkText"
+                    android:textColor="@color/hw_item_text"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description:"
+                    android:id="@+id/tvHomeworkTitleDesc"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/hw_dialog_title"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description text"
+                    android:id="@+id/tvHomeworkDescName"
+                    android:textSize="13sp"
+                    android:textColor="@color/hw_item_text" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollView5">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/tableLayoutHomeworkTasks"
+                android:background="#efeff0"
+                android:stretchColumns="*"
+                android:showDividers="middle"></TableLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:id="@+id/layoutPaging"
+            android:layout_marginTop="10dp"
+            android:gravity="bottom|center_horizontal"
+            android:visibility="gone"></LinearLayout>
+    </LinearLayout>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+</RelativeLayout>

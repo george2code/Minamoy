@@ -1,0 +1,138 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="il.co.yomanim.mobileyomanim.fragments.TimetableFragment">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:background="#116ea9"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="125dp"
+                android:layout_height="fill_parent"
+                android:text="08 Sep - 12 Sep"
+                android:id="@+id/textViewTimeWeekPrev"
+                android:textSize="13sp"
+                android:textColor="#a4d9ed"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="125dp"
+                android:layout_height="fill_parent"
+                android:text="08 Sep - 12 Sep"
+                android:id="@+id/textViewTimeWeekCurrent"
+                android:textSize="13sp"
+                android:textColor="#fff"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="125dp"
+                android:layout_height="fill_parent"
+                android:text="08 Sep - 12 Sep"
+                android:id="@+id/textViewTimeWeekNext"
+                android:textSize="13sp"
+                android:textColor="#a4d9ed"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <TabHost
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tabHostTimetable">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <HorizontalScrollView android:id="@+id/tabscroller"
+                android:scrollbars="none"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fillViewport="false" >
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#116ea9"></TabWidget>
+            </HorizontalScrollView>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical">
+
+                    <ScrollView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/scrollView4"
+                        android:fillViewport="true"
+                        android:background="#fff">
+
+
+                        <!--<ListView-->
+                            <!--android:layout_width="fill_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:id="@+id/listViewTimetable"-->
+                            <!--android:headerDividersEnabled="false"-->
+                            <!--android:stackFromBottom="false"-->
+                            <!--android:smoothScrollbar="false"-->
+                            <!--android:scrollingCache="false" />-->
+                        <GridLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/gridLayoutTimeTable"></GridLayout>
+                    </ScrollView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"></LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Timetable is empty"
+        android:id="@+id/textViewTimetableEmpty"
+        android:layout_gravity="center" />
+
+    <ProgressBar
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:indeterminateDrawable="@drawable/progress_bar_intro"
+        android:id="@+id/progressBar"
+        android:layout_gravity="center" />
+
+</FrameLayout>

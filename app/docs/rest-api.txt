@@ -1,0 +1,46 @@
+- Get child list by personId
+person/{person}/children
+return Person[]
+
+schools/{school}/student/{person}/date/{date}/timetable
+return Timetable
+
+schools/{school}/teacher/{person}/date/{date}/timetable
+return Timetable
+
+
+
+
+------
+getEduGroupStudents (long eduGroupId)
+v1/persons?eduGroup={0}
+
+
+getEduGroups (long personId, long schoolId)
+v1/edu-groups?person={0}&school={1}
+
+
+v1/edu-groups/{eduGroup}/subjects
+
+
+getEduGroupReportingPeriods (long eduGroupId)
+v1/edu-groups/{0}/reporting-periods
+
+
+getMarksByEduGroupSubjectAndPeriod  (long eduGroupId, long subjectId, String from, String to)
+v1/edu-groups/{0}/subjects/{1}/marks/{2}/{3}
+
+
+getLessonsByEduGroupAndSubjectAndPeriod (long eduGroupId, long subjectId, String from, String to)
+v1/edu-groups/{0}/subjects/{1}/lessons/{2}/{3}
+
+
+
+v1/lesson-log-entries?eduGroup={eduGroup}&subject={subject}&from={from}&to={to}
+
+
+
+v1/edu-groups/{group}/subjects/{subject}/final-marks
+
+
+v1/edu-groups/{group}/subjects/{subject}/wa-marks/{from}/{to}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFF</color>
+    <color name="grey_text">#333333</color>
+
+    <color name="primary">#2196F3</color>
+    <color name="primary_dark">#116ea9</color>
+    <color name="primary_light">#BBDEFB</color>
+    <color name="accent">#03A9F4</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#b6b6b6</color>
+
+    <color name="red">#FF0000</color>
+    <color name="material_cyan">#00bcd4</color>
+
+
+    <color name="modal_title">#333333</color>
+    <color name="modal_radio">#116ea9</color>
+    <color name="modal_btn_cancel">#ff6666</color>
+    <color name="modal_btn_choose">#a3b806</color>
+
+    <!-- Homework -->
+    <color name="hw_header_bg">#f7f7f8</color>
+    <color name="hw_header_text">#333333</color>
+    <color name="hw_state_bg_sent">#ff6666</color>
+    <color name="hw_state_bg_close">#a9bd15</color>
+    <color name="hw_state_text">#FFFFFF</color>
+    <color name="hw_item_text">#116ea9</color>
+    <color name="hw_dialog_title">#333333</color>
+    <color name="hw_dialog_positive_button">#a3b806</color>
+    <color name="hw_dialog_table_item">#000000</color>
+    <color name="hw_dialog_table_item_bg">#efeff0</color>
+    <!-- End Homework -->
+
+
+    <!-- Timetable -->
+    <color name="tm_text_date_range">#a4d9ed</color>
+    <color name="tm_bg_sunday">#f7b900</color>
+    <color name="tm_bg_monday">#f3931a</color>
+    <color name="tm_bg_tuesday">#a9bd15</color>
+    <color name="tm_bg_wednesday">#51bae0</color>
+    <color name="tm_bg_thursday">#157ebf</color>
+    <color name="tm_bg_day">#c479b0</color>
+    <!-- End Timetable -->
+
+
+    <!-- Journal -->
+    <color name="jr_bg_header">#f7f7f8</color>
+    <color name="jr_text_header">#333333</color>
+    <!-- End Journal -->
+
+</resources>

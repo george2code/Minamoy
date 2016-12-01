@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/DrawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            android:background="@color/primary_dark"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+
+
+            <!-- BUTTONS TOOLBAR -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Toolbar Title"
+                    android:layout_gravity="center"
+                    android:id="@+id/toolbar_title"
+                    android:textSize="19sp"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sub title"
+                    android:id="@+id/toolbar_subtitle"
+                    android:textColor="#fff"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right">
+                <RelativeLayout
+                    android:id="@+id/relButtonGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="16dp"
+                    android:visibility="gone">
+                    <ImageButton
+                        android:id="@+id/imageButtonToolbarGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/t_ico_group"
+                        android:contentDescription="@string/button_subject"
+                        android:clickable="false"
+                        android:background="#116ea9" />
+                    <TextView
+                        android:id="@+id/textViewToolbarGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/button_grade"
+                        android:textColor="#fff"
+                        android:textSize="10sp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_below="@+id/imageButtonToolbarGroup" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relButtonSubject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="16dp"
+                    android:visibility="gone">
+                    <ImageButton
+                        android:id="@+id/imageButtonToolbarSubject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/t_ico_subject"
+                        android:contentDescription="@string/button_subject"
+                        android:clickable="false"
+                        android:background="#116ea9" />
+                    <TextView
+                        android:id="@+id/textViewToolbarSubject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/button_subject"
+                        android:textColor="#fff"
+                        android:textSize="10sp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_below="@+id/imageButtonToolbarSubject" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relButtonPeriod"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="16dp"
+                    android:visibility="gone">
+                    <ImageButton
+                        android:id="@+id/imageButtonToolbarPeriod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/t_ico_period"
+                        android:contentDescription="@string/button_period"
+                        android:clickable="false"
+                        android:background="#116ea9" />
+                    <TextView
+                        android:id="@+id/textViewToolbarPeriod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/button_period"
+                        android:textColor="#fff"
+                        android:textSize="10sp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_below="@+id/imageButtonToolbarPeriod"
+                        android:visibility="visible" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relButtonWeek"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="16dp"
+                    android:visibility="gone">
+                    <ImageButton
+                        android:id="@+id/imageButtonToolbarWeek"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/t_ico_period"
+                        android:contentDescription="Week"
+                        android:clickable="false"
+                        android:background="#116ea9" />
+                    <TextView
+                        android:id="@+id/textViewToolbarWeek"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Week"
+                        android:textColor="#fff"
+                        android:textSize="10sp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_below="@+id/imageButtonToolbarWeek" />
+                </RelativeLayout>
+
+            </LinearLayout>
+            <!-- END BUTTONS TOOLBAR -->
+
+        </android.support.v7.widget.Toolbar>
+
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerView"
+        android:layout_width="320dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:background="#ffffff"
+        android:scrollbars="vertical">
+    </android.support.v7.widget.RecyclerView>
+</android.support.v4.widget.DrawerLayout>

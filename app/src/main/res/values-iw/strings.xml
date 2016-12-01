@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- PAGES -->
+    <string name="app_name">יומנים</string>
+    <string name="splash_title">רשת יומנים-סביבה חינוכית חברתית וטכנולוגית</string>
+
+
+    <string name="signin_title">הרשמה</string>
+    <string name="signin_label_login">שם משתמש</string>
+    <string name="signin_label_password">סיסמה</string>
+    <string name="signin_label_offline_mode">מצב לא מקוון</string>
+    <string name="invalid_email">שם משתמש זה אינו חוקי</string>
+    <string name="invalid_password">הסיסמה שהיקשתם קצרה מדי אנא נסו שוב</string>
+    <string name="incorrect_password">הסיסמה שגויה</string>
+    <string name="field_required">שדה זה הוא שדה חובה</string>
+    <string name="button_enter">הפעלה</string>
+
+
+    <string name="choose_school_title">בחירת בית ספר</string>
+    <string name="choose_school_role">תפקיד</string>
+
+
+    <string name="choose_person_title">בחירת משתמש</string>
+    <string name="choose_person_class">כיתה:</string>
+
+
+    <string name="error_title">שגיאה</string>
+    <string name="error_message"> פונקציה זאת אינה זמינה באופן זמני</string>
+    <string name="button_logout">התנתק</string>
+
+
+    <string name="timetable_title">מערכת שעות בית ספרית</string>
+    <string name="timetable_room">חדר</string>
+    <string name="timetable_type_weekend">Weekend</string>
+    <string name="timetable_type_each_day">Each day</string>
+    <string name="timetable_type_full_weed">Full week</string>
+    <string name="timetable_type_undefined">Undefined</string>
+    <string name="timetable_empty">מערכת שעות ריקה</string>
+
+
+    <string name="menu_journal">יומן דיגיטאלי</string>
+    <string name="menu_homework">שיעורי בית</string>
+    <string name="menu_timetable">מערכת שעות</string>
+    <string name="menu_schools">בתי ספר</string>
+    <string name="menu_child">ילד / תלמיד</string>
+    <string name="menu_settings">הגדרות</string>
+    <string name="menu_logout">התנתק</string>
+
+
+    <string name="homework_title">שיעורי בית</string>
+    <string name="homework_status_all">כולם</string>
+    <string name="homework_status_sent">נשלחו</string>
+    <string name="homework_status_closed">נסגרו</string>
+    <string name="homework_th_status">סטאטוס</string>
+    <string name="homework_th_lesson">שיעור</string>
+    <string name="homework_th_subject">נושא</string>
+    <string name="homework_th_description">תיאור</string>
+    <string name="homework_label_subject_name">שם נושא</string>
+    <string name="homework_label_work_status">סטאטוס שיעורי בית</string>
+    <string name="homework_empty">רשימת שיעורי בית ריקה</string>
+    <string name="button_ok">אישור</string>
+
+    <string name="button_grade">Grade</string>
+    <string name="button_subject">נושא</string>
+    <string name="button_group">קבוצות</string>
+    <string name="button_period">תקופה</string>
+
+
+    <string name="language_title">שפות</string>
+    <string name="language_english">אנגלית</string>
+    <string name="language_hebrew">עברית</string>
+    <string name="language_arabic">ערבית</string>
+    <string name="language_russian">רוסית</string>
+
+
+    <string name="journal_title">יומן </string>
+    <string name="journal_marks">ציונים</string>
+    <string name="journal_average">ממוצע</string>
+    <string name="journal_final">סופי</string>
+    <string name="journal_th_student">שם תלמיד</string>
+    <string name="journal_empty">לא נמצאו ציונים</string>
+
+
+    <string name="modal_subject_title">נושא השיעור</string>
+    <string name="modal_grade_title">Grade</string>
+    <string name="modal_group_title">קבוצות לימוד</string>
+    <string name="modal_period">תקופת דיווח</string>
+    <string name="modal_week">Reporting Week</string>
+    <string name="modal_label_scores">ציונים</string>
+    <string name="modal_label_attendance">נוכח</string>
+    <string name="modal_label_remarks">הציונים שלך</string>
+    <string name="modal_placeholder_remarks">טקסט עם תגובה</string>
+    <string name="button_cancel">ביטול</string>
+    <string name="button_save">שמור</string>
+    <string name="button_choose">בחר</string>
+    <!-- END PAGES -->
+
+    <!-- Strings related to login -->
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <!-- Strings related to login -->
+
+    <string name="yomanim_web"><ul>Yomanim.org.il</ul></string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_schools">Schools</string>
+    <string name="action_homeworks">Homeworks</string>
+    <string name="action_profile">Profile</string>
+    <string name="action_logout">Logout</string>
+
+    <string name="school_name_placeholder">School title</string>
+    <string name="school_avatar_placeholder">School avatar</string>
+
+    <string name="client_id">CECCF4CA-9AB9-46DD-8277-3F06A658D1A4</string>
+    <string name="client_secret">645AEA35-5410-49E0-9EF4-A170E44F95EB</string>
+    <string name="host_login">login.beta.yomanim.co.il/oauth3</string>
+    <string name="host">api.beta.yomanim.co.il</string>
+    <!--<string name="host_login">login.work.dev/oauth3</string>-->
+    <!--<string name="host">api.work.dev</string>-->
+    <string name="protocol">http</string>
+    <string name="scope">MobileJournal,Schools,EduGroups,Groups,EduWorks,Lessons,Marks,Roles,Birthday,Avatar,EmailAddress,Contacts</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_journal">Journal</string>
+    <string name="title_activity_homework">Homework</string>
+
+    <style name="DefaultButtonText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#979797</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:shadowColor">#f9f9f9</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <string name="title_activity_loader">LoaderActivity</string>
+    <string name="title_activity_child">ChildActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_error">ErrorActivity</string>
+    <string name="title_activity_school">SchoolActivity</string>
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_intro">Yomanim</string>
+    <string name="title_activity_chat">ChatActivity</string>
+</resources>

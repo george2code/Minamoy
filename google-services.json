@@ -1,0 +1,61 @@
+{
+  "project_info": {
+    "project_number": "930399098474",
+    "project_id": "yomanim-30a55"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930399098474:android:ad922e3ed9de1818",
+        "android_client_info": {
+          "package_name": "core.gcm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArfHt7JCo72q7JogaX8R4P8FUq02kqTcc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930399098474:android:e0939a3ba0515ce4",
+        "android_client_info": {
+          "package_name": "il.co.yomanim.mobileyomanim"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArfHt7JCo72q7JogaX8R4P8FUq02kqTcc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

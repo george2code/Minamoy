@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="il.co.yomanim.mobileyomanim.activities.SchoolActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#116ea9"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButtonSchoolLogout"
+                android:src="@mipmap/ico_arrow_back"
+                android:layout_gravity="center_vertical"
+                android:background="#116ea9" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/choose_school_title"
+                android:id="@+id/tvChooseSchoolTitle"
+                android:layout_gravity="center"
+                android:textSize="19sp"
+                android:textColor="#fff"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listSchools"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="#cccccc"
+            android:dividerHeight="1dp"
+            android:layout_below="@+id/frameLayout"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="false">
+        </ListView>
+    </LinearLayout>
+
+</RelativeLayout>

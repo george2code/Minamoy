@@ -1,0 +1,200 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical"
+    tools:context="il.co.yomanim.yomanim.LoginActivity"
+    android:background="#fff">
+
+    <!-- Login progress -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:text="@string/signin_title"
+            android:id="@+id/tvLoginTitle"
+            android:layout_gravity="center_horizontal"
+            android:textSize="19sp"
+            android:textColor="#fff"
+            android:background="#116ea9"
+            android:gravity="center" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/logo"
+            android:layout_marginTop="43dp"
+            android:layout_marginBottom="30dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView3"
+                android:src="@mipmap/icon_mail"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_gravity="center_vertical" />
+
+            <AutoCompleteTextView
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/signin_label_login"
+                android:inputType="text"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:textColor="#4d4d4d"
+                android:textColorHint="#999999"
+                android:background="@drawable/login_bottom_border"
+                android:textSize="14sp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:textColorHighlight="#333999"
+                android:textIsSelectable="false"
+                android:layout_gravity="center_horizontal"
+                android:gravity="left" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2"
+                android:src="@mipmap/icon_password"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_gravity="center_vertical" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:hint="@string/signin_label_password"
+                android:background="@drawable/login_bottom_border"
+                android:id="@+id/password"
+                android:layout_gravity="center_horizontal"
+                android:textSize="14sp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remember"
+                android:id="@+id/checkBoxRemember"
+                android:textSize="12sp"
+                android:textColor="#7a7a7a" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Please, enter your login name"
+                android:id="@+id/textViewLoginError"
+                android:textSize="14sp"
+                android:textColor="#ff6633"
+                android:layout_marginLeft="20dp"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/progressBarLogin"
+            android:indeterminateDrawable="@drawable/progress_bar_intro"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="false"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            style="@drawable/progress_bar_intro" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="30dp">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signin_label_offline_mode"
+                android:id="@+id/checkBox"
+                android:textSize="14sp"
+                android:textColor="#4d4d4d"
+                android:buttonTint="#9aaab5"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/what_is_my_website_url"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:textSize="14sp"
+                android:text="@string/yomanim_web"
+                android:textIsSelectable="false"
+                android:textColor="#5ac4eb"
+                android:gravity="right"
+                android:layout_marginRight="10dp"
+                android:textColorHint="#5ac4eb"
+                android:textColorLink="#5ac4eb" />
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/button_enter"
+            android:id="@+id/btnEnter"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_bg_rounded_corners"
+            android:textColor="#fff"
+            android:textSize="19sp"
+            android:capitalize="characters"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="21dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

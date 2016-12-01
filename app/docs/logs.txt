@@ -1,0 +1,525 @@
+1. разделить вкладки посещение и поведение для журнала
+2. фильтр по неделям для журнала
+3. выставление оценки, поведения и посещения
+
+
+
+[05/16/2016 4:29:56 PM] Ewgeny Fedotov: я решил убрать users/me/schools как бесполезный
+а метод
+person/{person}/children
+теперь возвращает персон с полем school
+где лежит полноценный объект школы, с аватаром, названием городом
+[05/16/2016 6:18:32 PM] Ewgeny Fedotov: edu-groups/{eduGroup}/students
+метод вернет студентов группы
+для всех систем
+
+
+
+
+//        switch (roleType) {
+//            case EduStaff:
+//                GroupTaskParams groupTaskParams = new GroupTaskParams(token, personId, schoolId);
+//                GradeLoaderTask gradeLoaderTask = new GradeLoaderTask();
+//                gradeLoaderTask.execute(groupTaskParams);
+//                break;
+//            case EduParent:
+//            case EduStudent:
+//                //student doesn't have to get grade list.
+//                GroupTaskParams groupTaskPersonParams = new GroupTaskParams(token, personId, schoolId);
+//                GroupLoaderTask groupLoaderPersonTask = new GroupLoaderTask();
+//                groupLoaderPersonTask.execute(groupTaskPersonParams);
+//                break;
+//            default:
+//                break;
+//        }
+
+
+
+
+//region Grade task -----------------------------------------
+    private class GradeLoaderTask extends AsyncTask<GroupTaskParams, Void, List<EduGroup>> {
+        @Override
+        protected void onPreExecute() {
+            if (tasks.size() == 0) {
+                pb.setVisibility(View.VISIBLE);
+            }
+            tasks.add(this);
+        }
+
+        @Override
+        protected List<EduGroup> doInBackground(GroupTaskParams... params) {
+
+            String contentGrades = HttpManager.getGradesByTeacherAndSchool(
+                    getActivity(),
+                    params[0].token,
+                    params[0].personId,
+                    params[0].schoolId);
+
+            List<EduGroup> groupList = new ArrayList<>();
+            groupList.add(0, new EduGroup(-1, "All"));
+            if (contentGrades != null) {
+                List<EduGroup> list = EduGroupJSONParser.parseEduGroupList(contentGrades, false);
+                if (list != null)
+                    groupList.addAll(list);
+            }
+
+            return groupList;
+        }
+
+        @Override
+        protected void onPostExecute(final List<EduGroup> result) {
+
+            tasks.remove(this);
+            if (tasks.size() == 0) {
+                pb.setVisibility(View.INVISIBLE);
+            }
+
+            if (result == null || result.size() == 0) {
+                Toast.makeText(getActivity(), "Cant' connect to web service",
+                        Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                // build string array
+                final String[] items = new String[result.size()];
+                for (int i=0; i<result.size(); i++) {
+                    items[i] = result.get(i).getFullName();
+                }
+                gradeId = result.get(0).getId();
+
+
+                //load Subject groups
+                //NOTE: second argument is grade, not person id
+                GroupTaskParams taskParams = new GroupTaskParams(token, gradeId, -1);
+                GroupLoaderTask groupLoaderTask = new GroupLoaderTask();
+                groupLoaderTask.execute(taskParams);
+                //END load Subject groups
+
+
+                // generate modal dialog
+                ImageButton btn = (ImageButton)getActivity().findViewById(R.id.imageButtonToolbarGroup);
+                RelativeLayout yourRelLay = (RelativeLayout) btn.getParent();
+                yourRelLay.setVisibility(View.VISIBLE);
+
+
+                ((RelativeLayout) btn.getParent()).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View args) {
+                        new MaterialDialog.Builder(layout.getContext())
+                                .title("Grade")
+                                .items(items)
+                                .itemsCallbackSingleChoice(gradeSelectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
+                                    @Override
+                                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                        gradeSelectedIndex = which;
+                                        groupSelectedIndex = 0;
+                                        periodSelectedIndex = 0;
+                                        gradeId = result.get(which).getId();
+
+                                        GroupTaskParams taskParams = new GroupTaskParams(token, result.get(which).getId(), -1);
+                                        GroupLoaderTask groupLoaderTask = new GroupLoaderTask();
+                                        groupLoaderTask.execute(taskParams);
+                                        return true;
+                                    }
+                                })
+                                .positiveText(getResources().getString(R.string.button_choose))
+                                .negativeText(getResources().getString(R.string.button_cancel))
+                                .titleColorRes(R.color.primary)
+                                .widgetColorRes(R.color.primary)
+                                .positiveColorRes(R.color.primary)
+                                .negativeColor(Color.RED)
+                                .show();
+                    }
+                });
+            }
+        }
+    } // END: Grade Loader Task
+    //endregion
+
+
+    //region Group task -----------------------------------------
+    private class GroupLoaderTask extends AsyncTask<GroupTaskParams, Void, List<EduGroup>> {
+        @Override
+        protected void onPreExecute() {
+            if (tasks.size() == 0) {
+                pb.setVisibility(View.VISIBLE);
+            }
+            tasks.add(this);
+        }
+
+        @Override
+        protected List<EduGroup> doInBackground(GroupTaskParams... params) {
+
+            String contentGroups = null;
+            List<EduGroup> eduGroupList = new ArrayList<>();
+
+            if (roleType == RoleType.EduStaff) {
+
+
+                if (gradeId == -1) {
+                    eduGroupList.add(new EduGroup(-1, "All"));
+                } else {
+                    contentGroups = HttpManager.getSubjectGroupsByGradeAndTeacher(
+                            getActivity(),
+                            params[0].token,
+                            params[0].personId);    //This is gradeId
+                }
+            }
+            else {
+                contentGroups = HttpManager.getSubjectGroupsByStudentAndSchool(
+                        getActivity(),
+                        params[0].token,
+                        params[0].personId,
+                        params[0].schoolId);
+
+                eduGroupList.add(new EduGroup(-1, "All"));
+            }
+
+            if (contentGroups != null) {
+                List<EduGroup> list = EduGroupJSONParser.parseEduGroupList(contentGroups, false);
+                if (list != null)
+                    eduGroupList.addAll(list);
+            }
+
+            return eduGroupList;
+        }
+
+        @Override
+        protected void onPostExecute(final List<EduGroup> result) {
+
+            tasks.remove(this);
+            if (tasks.size() == 0) {
+                pb.setVisibility(View.INVISIBLE);
+            }
+
+            if (result == null || result.size() == 0) {
+                Toast.makeText(getActivity(), "Cant' connect to web service",
+                        Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                // build string array
+                final String[] items = new String[result.size()];
+                for (int i=0; i<result.size(); i++) {
+                    items[i] = result.get(i).getFullName();
+                }
+
+
+                groupId = result.get(0).getId();
+
+
+                //load periods
+                PeriodTaskParams taskParams = new PeriodTaskParams(token, groupId);
+                PeriodLoaderTask periodLoaderTask = new PeriodLoaderTask();
+                periodLoaderTask.execute(taskParams);
+                //END load periods
+
+
+                // generate modal dialog
+                ImageButton btn = (ImageButton) getActivity().findViewById(R.id.imageButtonToolbarSubject);
+                RelativeLayout yourRelLay = (RelativeLayout) btn.getParent();
+                yourRelLay.setVisibility(View.VISIBLE);
+
+
+                ((RelativeLayout) btn.getParent()).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View args) {
+                        new MaterialDialog.Builder(layout.getContext())
+                                .title(getResources().getString(R.string.modal_group_title))
+                                .items(items)
+                                .itemsCallbackSingleChoice(groupSelectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
+                                    @Override
+                                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                        /**
+                                         * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                                         * returning false here won't allow the newly selected radio button to actually be selected.
+                                         **/
+                                        groupSelectedIndex = which;
+                                        periodSelectedIndex = 0;
+                                        groupId = result.get(which).getId();
+
+                                        PeriodTaskParams taskParams = new PeriodTaskParams(token, groupId);
+                                        PeriodLoaderTask periodLoaderTask = new PeriodLoaderTask();
+                                        periodLoaderTask.execute(taskParams);
+                                        return true;
+                                    }
+                                })
+                                .positiveText(getResources().getString(R.string.button_choose))
+                                .negativeText(getResources().getString(R.string.button_cancel))
+                                .titleColorRes(R.color.primary)
+                                .widgetColorRes(R.color.primary)
+                                .positiveColorRes(R.color.primary)
+                                .negativeColor(Color.RED)
+                                .show();
+                    }
+                });
+            }
+        }
+    } // END: Group Loader Task
+    //endregion
+
+
+
+    //region Period task -----------------------------------------
+    private class PeriodLoaderTask extends AsyncTask<PeriodTaskParams, Void, List<ReportingPeriod>> {
+        @Override
+        protected void onPreExecute() {
+            if (tasks.size() == 0) {
+                pb.setVisibility(View.VISIBLE);
+            }
+            tasks.add(this);
+        }
+
+        @Override
+        protected List<ReportingPeriod> doInBackground(PeriodTaskParams... params) {
+            String contentPeriods = null;
+            if (params[0].groupId > 0) {
+                contentPeriods = HttpManager.getEduGroupReportingPeriods(
+                        getActivity(),
+                        params[0].token,
+                        params[0].groupId
+                );
+            }
+            if (contentPeriods != null) {
+                return EduGroupJSONParser.parseReportingPeriods(contentPeriods);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final List<ReportingPeriod> result) {
+
+            tasks.remove(this);
+            if (tasks.size() == 0) {
+                pb.setVisibility(View.INVISIBLE);
+            }
+
+            String from, to;
+            ImageButton btn = (ImageButton)getActivity().findViewById(R.id.imageButtonToolbarPeriod);
+            RelativeLayout yourRelLay = (RelativeLayout) btn.getParent();
+
+            if (result != null) {
+
+                // build string array
+                final String[] items = new String[result.size()];
+                for (int i=0; i<result.size(); i++) {
+                    items[i] = MessageFormat.format("{0} {1}",
+                            String.valueOf(result.get(i).getYear()).replace(",", ""),
+                            StringUtils.removeExtraSpaces(result.get(i).getName())
+                    );
+                }
+
+                // generate modal dialog
+                yourRelLay.setVisibility(View.VISIBLE);
+
+
+                ((RelativeLayout) btn.getParent()).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View args) {
+                        new MaterialDialog.Builder(layout.getContext())
+                                .title(getResources().getString(R.string.modal_period))
+                                .items(items)
+                                .itemsCallbackSingleChoice(periodSelectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
+                                    @Override
+                                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                        /**
+                                         * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                                         * returning false here won't allow the newly selected radio button to actually be selected.
+                                         **/
+                                        //LOAD HOMEWORKS
+                                        periodSelectedIndex = which;
+                                        RunHomeworkTask(
+                                                groupId,
+                                                DateUtils.dateToString(result.get(which).getStart()),
+                                                DateUtils.dateToString(result.get(which).getFinish()),
+                                                roleType);
+
+                                        return true;
+                                    }
+                                })
+                                .positiveText(getResources().getString(R.string.button_choose))
+                                .negativeText(getResources().getString(R.string.button_cancel))
+                                .titleColorRes(R.color.primary)
+                                .widgetColorRes(R.color.primary)
+                                .positiveColorRes(R.color.primary)
+                                .negativeColor(Color.RED)
+                                .show();
+                    }
+                });
+
+                from = DateUtils.dateToString(result.get(0).getStart());
+                to = DateUtils.dateToString(result.get(0).getFinish());
+            }
+            else {
+                //Otherwise, get first day of current week, and the last day of the next week
+                Date currentDate = new Date();
+                from = DateUtils.getFirstDateOfWeek(currentDate);
+                Date nextWeekDate = DateUtils.addDays(currentDate, 7);
+                to = DateUtils.getLastDateOfWeek(nextWeekDate);
+
+                // generate modal dialog
+                yourRelLay.setVisibility(View.GONE);
+            }
+
+                //LOAD HOMEWORKS
+                RunHomeworkTask(groupId, from, to, roleType);
+
+        }
+
+        private void RunHomeworkTask(long groupId, String start, String finish, RoleType type)
+        {
+            HomeworkTaskParams homeworkTaskParams = new HomeworkTaskParams(groupId, start, finish, type);
+            HomeworkLoaderTask task = new HomeworkLoaderTask();
+            task.execute(homeworkTaskParams);
+        }
+
+    } // END: Group Loader Task
+    //endregion
+
+
+
+
+//                long startTime = System.nanoTime();
+//                //-- method
+//                LessonActivity lessonActivity = new LessonActivity();
+//                lessonActivity.setLessonId(Long.parseLong("121646"));
+//                lessonActivity.setPersonId(Long.parseLong("1000000019619"));
+//                lessonActivity.setMark(_mark);
+//                lessonActivity.setBehaviors(_behaviours);
+//                lessonActivity.setPresence(_presence);
+//                lessonActivity.setComment("Test comment text");
+//                //-- end method
+//                long endTime = System.nanoTime();
+//                long duration = (endTime - startTime);
+//                Log.e("Duration", String.valueOf(duration));
+//
+//                Gson gson = new Gson();
+//                String str = gson.toJson(lessonActivity);
+//                Log.d("Gson", str);
+
+
+
+
+
+
+
+для студента
+person/{person}/homeworks/{from}/{to}
+
+для препода
+schools/{school}/person/{person}/homeworks/{from}/{to}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[{"id":7103,"name":"י'-1","fullName":"י'-1","parallel":10,"timetable":null,
+"subjects":[
+{"id":4308,"name":"ביולוגיה"},
+{"id":4642,"name":"מעב' במערכ"},
+{"id":4289,"name":"עברית"}]},
+
+{"id":7104,"name":"י'-2","fullName":"י'-2","parallel":10,"timetable":null,"subjects":[{"id":4308,"name":"ביולוגיה"},{"id":4649,"name":"השכלה כללי"},{"id":4298,"name":"חינוך גופנ"},{"id":4642,"name":"מעב' במערכ"}]},
+{"id":7105,"name":"י'-3","fullName":"י'-3","parallel":10,"timetable":null,"subjects":[]},
+{"id":7107,"name":"י'-5","fullName":"י'-5","parallel":10,"timetable":null,"subjects":[]},
+
+{"id":7085,"name":"יא'-1","fullName":"יא'-1","parallel":11,"timetable":null,"subjects":[]},
+{"id":7087,"name":"יא'-3","fullName":"יא'-3","parallel":11,"timetable":null,"subjects":[{"id":4300,"name":"אזרחות"},{"id":4290,"name":"אנגלית"},{"id":4308,"name":"ביולוגיה"},{"id":4291,"name":"דת"},{"id":4297,"name":"היסטוריה"},{"id":4318,"name":"חינוך"},{"id":4298,"name":"חינוך גופנ"},{"id":4293,"name":"כימייה"},{"id":4287,"name":"מתמטיקה"},{"id":4289,"name":"עברית"},{"id":4288,"name":"ערבית"}]},{"id":7089,"name":"יא'-4","fullName":"יא'-4","parallel":11,"timetable":null,"subjects":[{"id":4300,"name":"אזרחות"},{"id":4290,"name":"אנגלית"},{"id":4308,"name":"ביולוגיה"},{"id":4291,"name":"דת"},{"id":4297,"name":"היסטוריה"},{"id":4318,"name":"חינוך"},{"id":4298,"name":"חינוך גופנ"},{"id":4302,"name":"לימודי הסב"},{"id":4645,"name":"מבוא כימיה"},{"id":4287,"name":"מתמטיקה"},{"id":4289,"name":"עברית"},{"id":4288,"name":"ערבית"}]},{"id":7090,"name":"יא'-5","fullName":"יא'-5","parallel":11,"timetable":null,"subjects":[{"id":4300,"name":"אזרחות"},{"id":4290,"name":"אנגלית"},{"id":4308,"name":"ביולוגיה"},{"id":4291,"name":"דת"},{"id":4297,"name":"היסטוריה"},{"id":4318,"name":"חינוך"},{"id":4298,"name":"חינוך גופנ"},{"id":4313,"name":"מדיה ופרסום"},{"id":4287,"name":"מתמטיקה"},{"id":4289,"name":"עברית"},{"id":4288,"name":"ערבית"},{"id":4314,"name":"תקשורת מעש"}]},{"id":7091,"name":"יא'-6","fullName":"יא'-6","parallel":11,"timetable":null,"subjects":[{"id":4300,"name":"אזרחות"},{"id":4290,"name":"אנגלית"},{"id":4308,"name":"ביולוגיה"},{"id":4291,"name":"דת"},{"id":4297,"name":"היסטוריה"},{"id":4318,"name":"חינוך"},{"id":4298,"name":"חינוך גופנ"},{"id":4293,"name":"כימייה"},{"id":4287,"name":"מתמטיקה"},{"id":4289,"name":"עברית"},{"id":4288,"name":"ערבית"}]},{"id":7095,"name":"יב'-3","fullName":"יב'-3","parallel":12,"timetable":null,"subjects":[]},{"id":7097,"name":"יב'-5","fullName":"יב'-5","parallel":12,"timetable":null,"subjects":[]},{"id":7098,"name":"יב'-6","fullName":"יב'-6","parallel":12,"timetable":null,"subjects":[]}]
+
+7103
+
+
+[{"id":10287,"name":"מתמטיקה 5  ","fullName":"מתמטיקה 5  ","parallel":10,"timetable":null,"subjects":[{"id":4287,"name":"מתמטיקה"}]},
+{"id":10288,"name":"מתמטיקה 5  ","fullName":"מתמטיקה 5  ","parallel":10,"timetable":null,"subjects":[{"id":4287,"name":"מתמטיקה"}]},
+{"id":10293,"name":"ערבית 5  ","fullName":"ערבית 5  ","parallel":10,"timetable":null,"subjects":[{"id":4288,"name":"ערבית"}]},
+{"id":10294,"name":"ערבית 5  ","fullName":"ערבית 5  ","parallel":10,"timetable":null,"subjects":[{"id":4288,"name":"ערבית"}]},
+{"id":10299,"name":"עברית 5  ","fullName":"עברית 5  ","parallel":10,"timetable":null,"subjects":[{"id":4289,"name":"עברית"}]},
+{"id":10304,"name":"עברית 5  ","fullName":"עברית 5  ","parallel":10,"timetable":null,"subjects":[{"id":4289,"name":"עברית"}]},
+{"id":10308,"name":"אנגלית","fullName":"אנגלית","parallel":10,"timetable":null,"subjects":[{"id":4290,"name":"אנגלית"}]},
+{"id":10310,"name":"אנגלית","fullName":"אנגלית","parallel":10,"timetable":null,"subjects":[{"id":4290,"name":"אנגלית"}]},
+{"id":10311,"name":"דת 1  ","fullName":"דת 1  ","parallel":10,"timetable":null,"subjects":[{"id":4291,"name":"דת"}]},
+{"id":10312,"name":"דת 1  ","fullName":"דת 1  ","parallel":10,"timetable":null,"subjects":[{"id":4291,"name":"דת"}]},
+{"id":10317,"name":"פיזיקה 5  ","fullName":"פיזיקה 5  ","parallel":10,"timetable":null,"subjects":[{"id":4292,"name":"פיזיקה"}]},
+{"id":10318,"name":"פיזיקה 5  ","fullName":"פיזיקה 5  ","parallel":10,"timetable":null,"subjects":[{"id":4292,"name":"פיזיקה"}]},
+{"id":10321,"name":"היסטוריה 1  ","fullName":"היסטוריה 1  ","parallel":10,"timetable":null,"subjects":[{"id":4297,"name":"היסטוריה"}]},
+{"id":10322,"name":"היסטוריה 1  ","fullName":"היסטוריה 1  ","parallel":10,"timetable":null,"subjects":[{"id":4297,"name":"היסטוריה"}]},
+{"id":10327,"name":"חינוך גופנ","fullName":"חינוך גופנ","parallel":10,"timetable":null,"subjects":[{"id":4298,"name":"חינוך גופנ"}]},
+{"id":10328,"name":"חינוך גופנ","fullName":"חינוך גופנ","parallel":10,"timetable":null,"subjects":[{"id":4298,"name":"חינוך גופנ"}]},
+{"id":10333,"name":"חינוך גופנ","fullName":"חינוך גופנ","parallel":10,"timetable":null,"subjects":[{"id":4298,"name":"חינוך גופנ"}]},
+{"id":10339,"name":"אזרחות 1  ","fullName":"אזרחות 1  ","parallel":10,"timetable":null,"subjects":[{"id":4300,"name":"אזרחות"}]},
+{"id":10340,"name":"אזרחות 1  ","fullName":"אזרחות 1  ","parallel":10,"timetable":null,"subjects":[{"id":4300,"name":"אזרחות"}]},
+{"id":10345,"name":"מדעי המחשב 5  ","fullName":"מדעי המחשב 5  ","parallel":10,"timetable":null,"subjects":[{"id":4301,"name":"מדעי המחשב"}]},
+{"id":10353,"name":"חינוך","fullName":"חינוך","parallel":10,"timetable":null,"subjects":[{"id":4318,"name":"חינוך"}]},
+{"id":10354,"name":"חינוך","fullName":"חינוך","parallel":10,"timetable":null,"subjects":[{"id":4318,"name":"חינוך"}]},
+{"id":10367,"name":"מערכות ספר","fullName":"מערכות ספר","parallel":10,"timetable":null,"subjects":[{"id":4639,"name":"מערכות ספר"}]},
+{"id":10370,"name":"מע'ספרתיות","fullName":"מע'ספרתיות","parallel":10,"timetable":null,"subjects":[{"id":4641,"name":"מע'ספרתיות"}]},
+{"id":10371,"name":"מב'  אלקט'","fullName":"מב'  אלקט'","parallel":10,"timetable":null,"subjects":[{"id":4643,"name":"מב'  אלקט'"}]},
+{"id":10372,"name":"מעב' במערכ","fullName":"מעב' במערכ","parallel":10,"timetable":null,"subjects":[{"id":4642,"name":"מעב' במערכ"}]},
+{"id":10379,"name":"כישורי חיי","fullName":"כישורי חיי","parallel":10,"timetable":null,"subjects":[{"id":4647,"name":"כישורי חיי"}]},
+{"id":10387,"name":"השכלה כללי","fullName":"השכלה כללי","parallel":10,"timetable":null,"subjects":[{"id":4649,"name":"השכלה כללי"}]}]
+
+
+
+
+
+
+CLASS 7087
+GROUP 7236
+
+
+[{"id":7114,"name":"מתמטיקה 4  ","fullName":"מתמטיקה 4  ","parallel":11,"timetable":null,"subjects":[{"id":4287,"name":"מתמטיקה"}]},
+{"id":7122,"name":"מתמטיקה 5  ","fullName":"מתמטיקה 5  ","parallel":11,"timetable":null,"subjects":[{"id":4287,"name":"מתמטיקה"}]},
+{"id":7128,"name":"ערבית 5  ","fullName":"ערבית 5  ","parallel":11,"timetable":null,"subjects":[{"id":4288,"name":"ערבית"}]},
+{"id":7138,"name":"עברית 5  ","fullName":"עברית 5  ","parallel":11,"timetable":null,"subjects":[{"id":4289,"name":"עברית"}]},
+{"id":7155,"name":"אנגלית","fullName":"אנגלית","parallel":11,"timetable":null,"subjects":[{"id":4290,"name":"אנגלית"}]},
+{"id":7163,"name":"דת 1  ","fullName":"דת 1  ","parallel":11,"timetable":null,"subjects":[{"id":4291,"name":"דת"}]},
+{"id":7177,"name":"כימייה 5  ","fullName":"כימייה 5  ","parallel":11,"timetable":null,"subjects":[{"id":4293,"name":"כימייה"}]},
+{"id":7183,"name":"היסטוריה 1  ","fullName":"היסטוריה 1  ","parallel":11,"timetable":null,"subjects":[{"id":4297,"name":"היסטוריה"}]},
+{"id":7195,"name":"חינוך גופנ","fullName":"חינוך גופנ","parallel":11,"timetable":null,"subjects":[{"id":4298,"name":"חינוך גופנ"}]},
+{"id":7207,"name":"חינוך גופנ","fullName":"חינוך גופנ","parallel":11,"timetable":null,"subjects":[{"id":4298,"name":"חינוך גופנ"}]},
+{"id":7218,"name":"אזרחות 1  ","fullName":"אזרחות 1  ","parallel":11,"timetable":null,"subjects":[{"id":4300,"name":"אזרחות"}]},
+{"id":7236,"name":"ביולוגיה 5  ","fullName":"ביולוגיה 5  ","parallel":11,"timetable":null,"subjects":[{"id":4308,"name":"ביולוגיה"}]},
+{"id":7245,"name":"חינוך","fullName":"חינוך","parallel":11,"timetable":null,"subjects":[{"id":4318,"name":"חינוך"}]},
+{"id":10385,"name":"אנגלית 4  ","fullName":"אנגלית 4  ","parallel":11,"timetable":null,"subjects":[{"id":4290,"name":"אנגלית"}]}]
+
+
+
+
+
+
+
+
+
+
+http://api.beta.yomanim.co.il/v1/edu-groups/7087/lessons-without-tasks/2015-08-27/2015-12-24?access_token=2EhJd0wDpKT3dyT5VZBiT8xemNHm2KSH
+
+
+
+
+
+[{"id":186,"start":"2015-08-27T00:00:00","finish":"2015-12-24T00:00:00","number":0,"type":"Trimester","name":"שליש א      ","year":2016},
+{"id":187,"start":"2015-12-25T00:00:00","finish":"2016-04-05T00:00:00","number":1,"type":"Trimester","name":"שליש ב      ","year":2016},
+{"id":188,"start":"2016-04-05T00:00:00","finish":"2016-08-26T00:00:00","number":2,"type":"Trimester","name":"שליש ג      ","year":2016}]
+
+
+
+
+
+---------------------------
+
+http://api.beta.yomanim.co.il/v1/persons/1000000022476/schools/1000000017993/edu-subjectgroups?access_token=bjBrU7uY53PUl8HZMTgrN3QdrqdS6fiU
+
+http://api.beta.yomanim.co.il/v1/persons/1000000022284/schools/1000000017993/edu-subjectgroups?access_token=bAPZW0fcrZYZt2R03jFAmhn7GkM6xWWM
+
+
